@@ -1,6 +1,6 @@
 const Repositorio = () => {
     return (
-        <div>Repositorio123</div>
+        <div style={{ color: "white" }}>Repositorio123</div>
     )
 }
 export default Repositorio
