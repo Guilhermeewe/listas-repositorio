@@ -1,8 +1,10 @@
 import { Container, Owner, Loading, BackButton, IssueList, PageActions, Filters } from "./styles"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import api from "../../services/api"
 import { useParams } from "react-router-dom"
 import { FaArrowLeft } from "react-icons/fa"
+import { gsap } from 'gsap'
+import { useGSAP } from '@gsap/react'
 
 const Repositorio = () => {
     const { repositorio } = useParams()
@@ -12,6 +14,22 @@ const Repositorio = () => {
     const [page, setPage] = useState(1) // páginação
     const [state, setState] = useState('all') // Estados de filtro
 
+    const container = useRef()
+
+    useGSAP(() => {
+        gsap.fromTo(container.current, {
+            opacity: 0,
+            scale: 0,
+            rotate: 30,
+        }, {
+            duration: 0.5,
+            opacity: 1,
+            scale: 1,
+            rotate: 0,
+        })
+    }, { scope: container, dependencies: [loading] })
+
+
     function handlePage(action) {
         action === 'next' ? setPage(page + 1) : setPage(page - 1)
     }
@@ -20,6 +38,11 @@ const Repositorio = () => {
         action === 'open' && setState('open')
         action === 'closed' && setState('closed')
         action === 'all' && setState('all')
+    }
+
+    function handleLoading() {
+        setLoading(true)
+
     }
 
 
@@ -59,8 +82,8 @@ const Repositorio = () => {
 
 
     return (
-        <Container>
-            <BackButton to={'/'}>
+        <Container ref={container} load={loading}>
+            <BackButton to={'/'} onClick={() => { handleLoading() }}>
                 <FaArrowLeft size={35} color="black" />
             </BackButton>
             <Owner>

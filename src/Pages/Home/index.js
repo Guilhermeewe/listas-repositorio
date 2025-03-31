@@ -1,15 +1,34 @@
 import api from '../../services/api'
 import { FaGithub, FaPlus, FaBars, FaSpinner, FaTrash } from 'react-icons/fa'
 import { Container, DeleteButton, Form, Repositorios, SubmitButton } from './styles'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
 
 const Home = () => {
     const [input, setInput] = useState('') // inspecionar o estado e valor do input 
     const [repos, setRepos] = useState([]) // vetores contendo os dados dos repositórios inseridos 
     const [loading, setLoading] = useState(false) // controlar animação de requisição
     const [alert, setAlert] = useState(null) // controlar alertas de erro na aplicação
+
+    const container = useRef()
+    const containerRepo = useRef()
+
+
+    useGSAP(() => {
+        gsap.fromTo(container.current, {
+            opacity: 0,
+            scale: 0,
+            rotate: -30
+
+        }, {
+            duration: 0.5,
+            scale: 1,
+            opacity: 1,
+            rotate: 0
+        })
+    },)
 
     //DidaMount
     useEffect(() => {
@@ -92,7 +111,7 @@ const Home = () => {
     // }
 
     return (
-        <Container>
+        <Container ref={container} className='main-container'>
             <h1>
                 <FaGithub size={60} color='black' />
                 Meus Repositórios

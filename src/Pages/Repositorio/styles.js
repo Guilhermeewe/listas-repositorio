@@ -5,6 +5,7 @@ export const Loading = styled.div`
 `
 
 export const Container = styled.div`
+    visibility: ${({ load }) => (load ? 'hidden' : 'visible')};
     max-width: 700px;
     background-color: #d8dfe3;
     border-radius: 5px;
@@ -108,13 +109,23 @@ export const PageActions = styled.div`
     align-items: center;
 
     button {
-        outline: 0;
-        border: 0;
-        background: #222;
         padding: 5px 10px;
-        color: white;
+        font-size: 1em;
+        background-color: transparent;
+        color: black;
         border-radius: 5px;
+        outline: 0;
+        border: 1px solid black;
+        transition-duration: 1s;
     }
+    button:hover{
+        background-color: #222;
+        color: white;
+        border: 1px solid white;
+        translate: 0px -5px;
+        box-shadow: 0px 7px 18px 0px rgba(0,0,0,0.75);
+    }
+
 
     span {
         color: #222;
@@ -122,7 +133,7 @@ export const PageActions = styled.div`
     }
 
     .back{
-          visibility: ${props => (props.isDisabled ? 'hidden' : 'visible')};
+        visibility: ${props => (props.isDisabled ? 'hidden' : 'visible')};
     }
 
 `
@@ -139,6 +150,14 @@ export const Filters = styled.div`
         border-radius: 5px;
         outline: 0;
         border: 1px solid black;
+        transition: 1s;
 
+    }
+    button:hover{
+        background-color: #222;
+        color: white;
+        border: 1px solid white;
+        translate: 0px -5px;
+        box-shadow: 0px 7px 18px 0px rgba(0,0,0,0.75);
     }
 `
