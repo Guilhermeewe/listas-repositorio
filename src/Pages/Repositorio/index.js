@@ -11,9 +11,10 @@ const Repositorio = () => {
     const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
 
-    const handlePage = (a) => {
-        setPage(a == 'back' ? page - 1 : page + 1)
+    function handlePage(aa) {
+        setPage(aa === 'next' ? page + 1 : page - 1);
     }
+
 
     useEffect(() => {
         async function issueList() {
@@ -86,9 +87,9 @@ const Repositorio = () => {
                 })}
             </IssueList>
 
-            <PageActions>
-                <button className="back" isDisabled={page} type="button" onClick={() => { handlePage("back") }}>Voltar {page}</button>
-                <button type="button" onClick={() => { handlePage("next") }}>Próxima {page}</button>
+            <PageActions isDisabled={page < 2}>
+                <button className="back" type="button" onClick={() => handlePage('back')}>Voltar</button>
+                <button type="button" onClick={() => handlePage('next')}>Próximo</button>
             </PageActions>
         </Container>
     )
