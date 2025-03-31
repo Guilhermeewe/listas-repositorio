@@ -1,4 +1,4 @@
-import { Container, Owner, Loading, BackButton, IssueList, PageActions } from "./styles"
+import { Container, Owner, Loading, BackButton, IssueList, PageActions, Filters } from "./styles"
 import { useEffect, useState } from "react"
 import api from "../../services/api"
 import { useParams } from "react-router-dom"
@@ -8,11 +8,18 @@ const Repositorio = () => {
     const { repositorio } = useParams()
     const [repositorioData, setRepositorioData] = useState({})
     const [issuesData, setIssuesData] = useState([])
-    const [loading, setLoading] = useState(true)
-    const [page, setPage] = useState(1)
+    const [loading, setLoading] = useState(true) // teste
+    const [page, setPage] = useState(1) // páginação
+    const [state, setState] = useState('all') // Estados de filtro
 
-    function handlePage(aa) {
-        setPage(aa === 'next' ? page + 1 : page - 1);
+    function handlePage(action) {
+        action === 'next' ? setPage(page + 1) : setPage(page - 1)
+    }
+
+    function handleFilter(action) {
+        action === 'open' && setState('open')
+        action === 'closed' && setState('closed')
+        action === 'all' && setState('all')
     }
 
 
@@ -20,15 +27,15 @@ const Repositorio = () => {
         async function issueList() {
             const response = await api.get(`/repos/${repositorio}/issues`, {
                 params: {
-                    state: 'open',
+                    state,
                     per_page: 5,
-                    page: page
+                    page
                 }
             })
             setIssuesData(response.data)
         }
         issueList()
-    }, [page])
+    }, [page, state])
 
     useEffect(() => {
         async function load() {
@@ -37,7 +44,7 @@ const Repositorio = () => {
                 api.get(`/repos/${repositorio}`),
                 api.get(`/repos/${repositorio}/issues`, {
                     params: {
-                        state: 'open',
+                        state,
                         per_page: 5,
                         page
                     }
@@ -64,6 +71,11 @@ const Repositorio = () => {
             </Owner>
 
             <IssueList>
+                <Filters>
+                    <button type="button" onClick={() => { handleFilter('closed') }}>Closed</button>
+                    <button type="button" onClick={() => { handleFilter('open') }}>Open</button>
+                    <button type="button" onClick={() => { handleFilter('all') }}>All</button>
+                </Filters>
                 {issuesData.map((issues) => {
                     return (
                         <li key={String(issues.id)}>
@@ -89,6 +101,7 @@ const Repositorio = () => {
 
             <PageActions isDisabled={page < 2}>
                 <button className="back" type="button" onClick={() => handlePage('back')}>Voltar</button>
+                <span>{page}</span>
                 <button type="button" onClick={() => handlePage('next')}>Próximo</button>
             </PageActions>
         </Container>

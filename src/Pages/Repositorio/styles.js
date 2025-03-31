@@ -116,8 +116,29 @@ export const PageActions = styled.div`
         border-radius: 5px;
     }
 
+    span {
+        color: #222;
+        font-size: 2em;
+    }
+
     .back{
           visibility: ${props => (props.isDisabled ? 'hidden' : 'visible')};
     }
 
+`
+
+export const Filters = styled.div`
+    display: flex;
+    gap: 10px;
+
+    button {
+        padding: 5px 10px;
+        font-size: 1em;
+        background-color: transparent;
+        color: black;
+        border-radius: 5px;
+        outline: 0;
+        border: 1px solid black;
+
+    }
 `
