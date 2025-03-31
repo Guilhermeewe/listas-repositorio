@@ -102,4 +102,21 @@ export const IssueList = styled.ul`
         }
     }
 `
+export const PageActions = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
+    button {
+        outline: 0;
+        border: 0;
+        background: #222;
+        color: white;
+        padding: 5px 10px;
+        
+    }
+
+    .back{
+        visibility: ${({ isDisabled }) => (isDisabled <= 1 ? 'hidden' : 'visible')};
+    }
+`
