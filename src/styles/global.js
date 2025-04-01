@@ -6,6 +6,7 @@ export default createGlobalStyle`
     padding: 0;
     outline: 0;
     box-sizing: border-box;
+    font-family: Roboto, sans-serif;
 }
 
 html, body, #root {
@@ -13,7 +14,7 @@ html, body, #root {
 }
 
 body {
-    background: #2b2b2b ;
+    background: #151515;
     font-size: 15px;
     -webkit-font-smoothing: antialiased !important;
 }
