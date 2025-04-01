@@ -1,10 +1,11 @@
 import api from '../../services/api'
-import { FaGithub, FaPlus, FaBars, FaSpinner, FaTrash } from 'react-icons/fa'
-import { Container, DeleteButton, Form, Repositorios, SubmitButton } from './styles'
+import gsap from 'gsap'
+import { FaPlus, FaBars, FaSpinner, FaTrash, FaGithubAlt } from 'react-icons/fa'
+import { Container, DeleteButton, Form, Repositorios, SubmitButton, Main } from './styles'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
+import { IoLogoGithub } from 'react-icons/io5'
 
 const Home = () => {
     const [input, setInput] = useState('') // inspecionar o estado e valor do input 
@@ -13,7 +14,7 @@ const Home = () => {
     const [alert, setAlert] = useState(null) // controlar alertas de erro na aplicação
 
     const container = useRef()
-    const containerRepo = useRef()
+    const repositorioGSAP = useRef()
 
 
     useGSAP(() => {
@@ -95,60 +96,59 @@ const Home = () => {
         setRepos(find)
     }, [repos])
 
-
-    // async function handleSubmit(e) {
-    //     e.preventDefault()
-
-    //     const response = await api.get(`repos/${input}`)
-
-    //     const data = {
-    //         name: response.data.full_name,
-    //     }
-
-    //     setRepos([...repos, data])
-    //     setInput('')
-
-    // }
+    useGSAP(() => {
+        gsap.fromTo(repositorioGSAP.current, {
+            opacity: 0,
+            scale: 0.95,
+            duration: 0.3
+        }, {
+            opacity: 1,
+            scale: 1
+        })
+    }, { dependencies: [repos] })
 
     return (
-        <Container ref={container} className='main-container'>
-            <h1>
-                <FaGithub size={60} color='black' />
-                Meus Repositórios
-            </h1>
-            <Form onSubmit={handleSubmit} onError={alert}>
-                <input
-                    type="text"
-                    placeholder="Adicionar Repositório"
-                    value={input}
-                    onChange={(e) => handleOnChange(e)}
-                />
-                <SubmitButton loading={loading ? 1 : 0}>
-                    {loading ? (
-                        <FaSpinner color='black' size={20} />
-                    ) : (
-                        <FaPlus color='black' size={20} />
-                    )}
-                </SubmitButton>
+        <Main >
+            <FaGithubAlt color='white' size={500} className='logo' />
+            <Container ref={container} className='main-container'>
+                <h1>
+                    <IoLogoGithub size={60} color='black' />
+                    My Repositories
+                </h1>
+                <Form onSubmit={handleSubmit} onError={alert}>
+                    <input
+                        type="text"
+                        placeholder="Add a repository"
+                        value={input}
+                        onChange={(e) => handleOnChange(e)}
+                    />
+                    <SubmitButton loading={loading ? 1 : 0}>
+                        {loading ? (
+                            <FaSpinner color='black' size={20} />
+                        ) : (
+                            <FaPlus color='black' size={20} />
+                        )}
+                    </SubmitButton>
 
-            </Form>
+                </Form>
 
-            <Repositorios>
-                {repos.map((repo) => (
-                    <li key={repo.name}>
-                        <span>
-                            <DeleteButton onClick={() => handleDelete(repo.name)} >
-                                <FaTrash size={20} />
-                            </DeleteButton>
-                            {repo.name}
-                        </span>
-                        <Link to={`/repositorio/${encodeURIComponent(repo.name)}`}>
-                            <FaBars size={30} color='black' />
-                        </Link>
-                    </li>
-                ))}
-            </Repositorios>
-        </Container>
+                <Repositorios ref={repositorioGSAP} >
+                    {repos.map((repo) => (
+                        <li key={repo.name}>
+                            <span>
+                                <DeleteButton onClick={() => handleDelete(repo.name)} >
+                                    <FaTrash size={20} />
+                                </DeleteButton>
+                                {repo.name}
+                            </span>
+                            <Link to={`/repositorio/${encodeURIComponent(repo.name)}`}>
+                                <FaBars size={30} color='black' />
+                            </Link>
+                        </li>
+                    ))}
+                </Repositorios>
+            </Container>
+        </Main>
     )
 }
 

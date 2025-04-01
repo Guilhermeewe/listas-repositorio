@@ -1,5 +1,18 @@
 import styled, { keyframes, css } from 'styled-components'
 
+
+export const Main = styled.main`
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+
+    .logo {
+        position: fixed;
+        bottom: -30px;
+        opacity: 0.1;
+        border-radius: 100%;
+    }
+`
 export const Repositorios = styled.ul`
     list-style: none;
     font-size: 18px;
