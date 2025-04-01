@@ -86,10 +86,10 @@ export const IssueList = styled.ul`
 
         a {
             text-decoration: none;
-            color: tomato;
+            color: black;
             transition: 0.3s;
             &:hover {
-                opacity: 0.65;
+                opacity: 0.35;
             }
         }
         span {
@@ -97,9 +97,9 @@ export const IssueList = styled.ul`
             border-radius: 10px;
             color: #FFF;
             font-size: 12px;
-            font-weight: 600px;
-            padding: 4px;
-            margin-left: 10px;
+            font-weight: 800px;
+            padding: 4px 8px;
+            margin-left: 8px;
         }
     }
 `
@@ -116,13 +116,12 @@ export const PageActions = styled.div`
         border-radius: 5px;
         outline: 0;
         border: 1px solid black;
-        transition-duration: 1s;
+        transition: 0.3s;
     }
     button:hover{
         background-color: #222;
         color: white;
         border: 1px solid white;
-        translate: 0px -5px;
         box-shadow: 0px 7px 18px 0px rgba(0,0,0,0.75);
     }
 
@@ -150,7 +149,7 @@ export const Filters = styled.div`
         border-radius: 5px;
         outline: 0;
         border: 1px solid black;
-        transition: 1s;
+        transition: all 0.3s ease;
 
     }
     button:hover{

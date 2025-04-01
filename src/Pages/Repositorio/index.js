@@ -15,6 +15,10 @@ const Repositorio = () => {
     const [state, setState] = useState('all') // Estados de filtro
 
     const container = useRef()
+    const containerList = useRef()
+    const pageAction = useRef()
+    const btnRef = useRef(null);
+
 
     useGSAP(() => {
         gsap.fromTo(container.current, {
@@ -27,7 +31,24 @@ const Repositorio = () => {
             scale: 1,
             rotate: 0,
         })
+
+
     }, { scope: container, dependencies: [loading] })
+
+    useGSAP(() => {
+        gsap.fromTo(containerList.current, {
+            opacity: 0,
+            y: 50,
+        }, {
+
+            delay: 0.3,
+            opacity: 1,
+            y: 0
+
+        })
+
+    }, { dependencies: [issuesData] })
+
 
 
     function handlePage(action) {
@@ -42,7 +63,6 @@ const Repositorio = () => {
 
     function handleLoading() {
         setLoading(true)
-
     }
 
 
@@ -56,6 +76,7 @@ const Repositorio = () => {
                 }
             })
             setIssuesData(response.data)
+            setLoading(false)
         }
         issueList()
     }, [page, state])
@@ -93,12 +114,13 @@ const Repositorio = () => {
                 <p>{repositorioData.language}</p>
             </Owner>
 
-            <IssueList>
-                <Filters>
-                    <button type="button" onClick={() => { handleFilter('closed') }}>Closed</button>
-                    <button type="button" onClick={() => { handleFilter('open') }}>Open</button>
-                    <button type="button" onClick={() => { handleFilter('all') }}>All</button>
-                </Filters>
+            <Filters>
+                <button type="button" onClick={() => { handleFilter('closed') }}>Closed</button>
+                <button type="button" onClick={() => { handleFilter('open') }}>Open</button>
+                <button type="button" onClick={() => { handleFilter('all') }}>All</button>
+            </Filters>
+
+            <IssueList ref={containerList} >
                 {issuesData.map((issues) => {
                     return (
                         <li key={String(issues.id)}>
@@ -122,10 +144,17 @@ const Repositorio = () => {
                 })}
             </IssueList>
 
-            <PageActions isDisabled={page < 2}>
-                <button className="back" type="button" onClick={() => handlePage('back')}>Voltar</button>
+            <PageActions ref={pageAction} isDisabled={page < 2}>
+                <button
+                    className="back"
+                    ref={btnRef}
+                    type="button"
+                    onClick={() => handlePage('back')}>Back</button>
                 <span>{page}</span>
-                <button type="button" onClick={() => handlePage('next')}>Próximo</button>
+                <button
+                    ref={btnRef}
+                    type="button"
+                    onClick={() => handlePage('next')}>Next</button>
             </PageActions>
         </Container>
     )
